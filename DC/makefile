@@ -1,0 +1,59 @@
+#
+#   FILE      	  : makefile
+#   PROJECT       : SENG2030-21W-Sec1-System Programming - Assignment #3
+#   PROGRAMMER    : Alex Braverman
+#   FIRST VERSION : March 25, 2020 
+#   DESCRIPTION   : 
+# 		This make file will create all the relevant objects that encodeInput
+#		is dependent on.
+#
+
+
+# FINAL BINARY Target
+# Instead of writing out all these object names when linking them in encodeInput
+# we use a convenient variable instead!
+TARGET_DEPENDENCIES := ./obj/DC.o ./obj/genRandSleep.o
+TARGET_DEPENDENCIES += ./obj/genRandStatus.o ./obj/getOrCreateLogSem.o
+TARGET_DEPENDENCIES += ./obj/logMessage.o ./obj/sendMessage.o 
+# TARGET_DEPENDENCIES += ./obj/organizer.o
+
+# Link everything, optionally including the math library (add -lm after -o ./bin/DC)
+./bin/DC : $(TARGET_DEPENDENCIES)
+	cc $(TARGET_DEPENDENCIES) -o ./bin/DC 
+#
+# =======================================================
+#                     Dependencies
+# =======================================================                     
+./obj/DC.o : ./src/DC.c ./inc/DC.h
+	cc -c -g ./src/DC.c -o ./obj/DC.o
+
+./obj/genRandSleep.o : ./src/genRandSleep.c ./inc/DC.h
+	cc -c -g ./src/genRandSleep.c -o ./obj/genRandSleep.o
+
+./obj/genRandStatus.o : ./src/genRandStatus.c ./inc/DC.h
+	cc -c -g ./src/genRandStatus.c -o ./obj/genRandStatus.o 
+
+./obj/getOrCreateLogSem.o : ./src/getOrCreateLogSem.c ./inc/DC.h
+	cc -c -g ./src/getOrCreateLogSem.c -o ./obj/getOrCreateLogSem.o
+
+./obj/logMessage.o : ./src/logMessage.c ./inc/DC.h
+	cc -c -g ./src/logMessage.c -o ./obj/logMessage.o
+
+./obj/sendMessage.o : ./src/sendMessage.c ./inc/DC.h
+	cc -c -g ./src/sendMessage.c -o ./obj/sendMessage.o
+
+# ./obj/organizer.o : ./src/organizer.c ./inc/encodeInput.h
+# 	cc -c -g ./src/organizer.c -o ./obj/organizer.o
+
+#
+# =======================================================
+# Other targets
+# =======================================================                     
+all : ./bin/DC
+
+clean:
+	rm -f ./bin/*
+	rm -f ./obj/*.o
+	
+
+
