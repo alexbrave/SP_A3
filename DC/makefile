@@ -15,7 +15,7 @@
 TARGET_DEPENDENCIES := ./obj/DC.o ./obj/genRandSleep.o
 TARGET_DEPENDENCIES += ./obj/genRandStatus.o ./obj/getOrCreateLogSem.o
 TARGET_DEPENDENCIES += ./obj/logMessage.o ./obj/sendMessage.o 
-# TARGET_DEPENDENCIES += ./obj/organizer.o
+TARGET_DEPENDENCIES += ./obj/releaseLogSem.o
 
 # Link everything, optionally including the math library (add -lm after -o ./bin/DC)
 ./bin/DC : $(TARGET_DEPENDENCIES)
@@ -42,8 +42,8 @@ TARGET_DEPENDENCIES += ./obj/logMessage.o ./obj/sendMessage.o
 ./obj/sendMessage.o : ./src/sendMessage.c ./inc/DC.h
 	cc -c -g ./src/sendMessage.c -o ./obj/sendMessage.o
 
-# ./obj/organizer.o : ./src/organizer.c ./inc/encodeInput.h
-# 	cc -c -g ./src/organizer.c -o ./obj/organizer.o
+./obj/releaseLogSem.o : ./src/releaseLogSem.c ./inc/DC.h
+	cc -c -g ./src/releaseLogSem.c -o ./obj/releaseLogSem.o
 
 #
 # =======================================================

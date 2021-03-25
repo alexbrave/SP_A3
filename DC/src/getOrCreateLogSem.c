@@ -21,9 +21,7 @@ int getOrCreateLogSem(void)
     // We'll use the semaphore key that we got to then get the semaphore ID
     int semaphoreID = 0;
 
-    // We use this counter to only try to 
-    int getSemAttmptCntr = 
-
+    // Here we'll get the key via which we'll be able to get the semaphore
     semaphoreKey = ftok(CURRENT_DIRECTORY, SEM_FTOK_ID);
 
     // Check if the semaphore already exists
@@ -49,30 +47,11 @@ int getOrCreateLogSem(void)
     
     // We will try to get the semaphore 200 times, if that fails, we'll assume it's gone
     // and return that we were unsuccessfull
-    while(semop (semaphoreID, &acquire_operation, NUM_SOP_STRUCTS) == OPERATION_FAILED && 
-                 getSemAttmptCntr > 0) 
+    if (semop(semaphoreID, &acquire_operation, NUM_SOP_STRUCTS) == OPERATION_FAILED)
     {
         printf ("(USER1) GRRRRR.... Can't start critical region\n");
-        usleep(MICROSEC_SLEEP);
     }
 
-    // We tried to get the semaphore many times, but were unsuccessful
-    if(getSemAttmptCntr == 0)
-    {
-        return OPERATION_FAILED;
-    }
+    return OPERATION_SUCCESS;
 
-    else
-    {
-        // Let the calling function know that it now has the semaphore
-        return OPERATION_SUCCESS;
-    }
-
-}
-
-
-
-int releaseLogSem(void)
-{
-    return 0;
 }

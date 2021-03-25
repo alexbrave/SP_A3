@@ -40,11 +40,13 @@
 
 // Function prototypes
 int sendMessage (pid_t dcPID, int msgQueID, int status);
-int logMessage(int entryToLog);
+int logMessage(int dcPID, int statusToLog, char* messageToLog);
 int genRandStatus(void);
 int getOrCreateLogSem(void);
 int genRandSleep(void);
 int sendMessage (pid_t dcPID, int msgQueID, int status);
+int releaseLogSem(void);
+
 
 
 
@@ -65,6 +67,19 @@ int sendMessage (pid_t dcPID, int msgQueID, int status);
 #define MACH_OFFLINE_INT 6
 #define MACH_OFFLINE_MSG "Machine is Off-line"
 
+// Special statuses for logging
+#define SHUTDOWN_INT 7
+#define MACH_OFF_SHUTD_MSG "Machine Off-Line message issued, shutting down"
+#define MSG_QUE_GONE_MSG "Could not send message over que, it may be gone, shutting down"
+
+
+
+// Log file path
+// #define LOG_FILE_PATH "/tmp/dataCreator.log"
+
+// Temp log file for debugging
+#define LOG_FILE_PATH "/tmp/dataCreator.log"
+#define MAX_LOG_LEN 100
 
 // Log Message Entries
 #define LOG_MSG_QUE_GONE 1 // this is for the main loop if DC discovers that msg queue is gone
@@ -78,9 +93,6 @@ int sendMessage (pid_t dcPID, int msgQueID, int status);
 #define CHECK_SEM_EXISTS 0
 #define SEM_INITAL_VALUE 1
 #define NUM_SOP_STRUCTS 1
-#define MICROSEC_SLEEP 10000
-#define MAX_ATMPT_GET_SEM 200
-
 
 
 // Constants used with MESSAGESTRUCT

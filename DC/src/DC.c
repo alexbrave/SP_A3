@@ -19,6 +19,7 @@ int main(void)
     // Set-up Logic //
     //////////////////
 
+
     // The PID of the data creator
     pid_t dcPID = 0;
 
@@ -40,6 +41,7 @@ int main(void)
     // The data creator has been started and it's first step is to get its PID
     dcPID = getpid();
 
+
     // Next the data creator will get the key, via which it will determine if the message queue exists
     msgQueKey = ftok(CURRENT_DIRECTORY, AGREED_UPON_VALUE);
 
@@ -47,6 +49,8 @@ int main(void)
     {
         // ADD LOGIC LATER TO HANDLE IF KEY CREATION FAILED AND REMOVE PRINT STATEMENT
         printf("\nCreating the key failed.\n");
+        // RELEASE SEMAPHORE AFTER LOGGING
+        return 0;
     }
 
     // Use key to check if message queue exists on a loop
@@ -82,11 +86,19 @@ int main(void)
         if(sendMessage(dcPID, msgQueID, randStatus) == OPERATION_FAILED)
         {
             // log and exit
+            printf("Could not send message, possibly because message queue is gone!");
+            logMessage(dcPID, SHUTDOWN_INT, MSG_QUE_GONE_MSG);
+            // RELEASE SEMAPHORE
+            return 0;
         }
 
         if(shutdownDC == true)
         {
             // log and exit
+            printf("Sent status 6, Machine Off-Line, shutting down.");
+            logMessage(dcPID, SHUTDOWN_INT, MACH_OFF_SHUTD_MSG);
+            // RELEASE SEMAPHORE
+            return 0;
         }
         else
         {
