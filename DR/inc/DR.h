@@ -2,7 +2,10 @@
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/msg.h>
+#include <sys/shm.h>
 #include <stdbool.h>
+#include <unistd.h>
+#include <time.h>
 
 #include <string.h>
 
@@ -12,8 +15,11 @@
 #define AGREED_UPON_VALUE 100
 #define CURRENT_DIRECTORY "."
 
-#define MSG_QUEUE_NOT_FOUND -1
+#define SHARED_MEMORY_KEY 16535
 
+#define NOT_FOUND -1
+
+#define SECONDS_TO_SLEEP 1
 
 // msg values
 #define ALL_OK 0
