@@ -44,7 +44,7 @@ int logMessage(int dcPID, int statusToLog, char* messageToLog);
 int genRandStatus(void);
 int getOrCreateLogSem(void);
 int genRandSleep(void);
-int sendMessage (pid_t dcPID, int msgQueID, int status);
+// int sendMessage (pid_t dcPID, int msgQueID, int status);
 int releaseLogSem(void);
 
 

@@ -58,7 +58,7 @@ int main(void)
 
 
     // While the data creator is not able to get the message queue, it will keep trying to get it,
-    // and sleeping for 10 seconds in between attempts
+    // and sleep for 10 seconds in between attempts
     while(msgQueID == OPERATION_FAILED)
     {
         sleep(MSG_Q_NOT_EXIST_SLEEP);
