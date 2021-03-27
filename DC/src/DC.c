@@ -36,7 +36,7 @@ int main(void)
     bool shutdownDC = false;
 
     // Interval for which the DC should sleep for
-    bool sleepInterval = 0;
+    int sleepInterval = 0;
 
     // The data creator has been started and it's first step is to get its PID
     dcPID = getpid();

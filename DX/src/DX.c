@@ -39,7 +39,7 @@ int main(void)
     bool shutdownDX = false;
 
     // Interval for which the DX should sleep for
-    bool randSleepInterval = 0;
+    int randSleepInterval = 0;
 
     // Counter for max number of retries to attach to shared memory
     int retryCounter = MAX_ATTACH_RETRIES;
@@ -121,12 +121,12 @@ int main(void)
             // LOG AND EXIT
             return 0;
         }
-        else
-        {
-            // Generate a random sleep interval, and sleep for that many seconds
-            randSleepInterval = genRandSleep();
-            sleep(randSleepInterval);
-        }
+        // else
+        // {
+        //     // Generate a random sleep interval, and sleep for that many seconds
+        //     randSleepInterval = genRandSleep();
+        //     sleep(randSleepInterval);
+        // }
     }
     
 }

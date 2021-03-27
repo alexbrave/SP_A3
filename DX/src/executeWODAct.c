@@ -3,11 +3,6 @@
 
 #include "../inc/DX.h"
 
-// These functions should only be used by executeWODAct(), 
-// thus they are declared and defined here, and not in the header file
-int attemptToKillProcess(int dcPID, int WODAction, int dcAffected);
-int attemptToDeleteMsgQ(int msgQueueID);
-
 // POSSIBLY CAPITALIZE LATER
 #define doNothingA 0 // do nothing
 #define killDC01A 1 // kill DC-01 (if it exists)
@@ -126,7 +121,15 @@ int executeWODAct(MasterList* masterList)
 // ADD FUNCTION HEADER
 int attemptToKillProcess(int dcPID, int WODAction, int dcAffected)
 {
+    // store the result of our attempted action
     int resultOfWODAct = 0;
+
+    // right away we know that if the process has an id of 0, then it's invalid
+    if(dcPID == 0)
+    {
+        return NO_SUCH_PROCESS;
+    }
+
     resultOfWODAct = kill(dcPID, CHECK_PROC_EXISTS);
         if(resultOfWODAct == OPERATION_FAILED)
         {

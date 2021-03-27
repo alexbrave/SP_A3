@@ -96,6 +96,10 @@ int logMessage(int dcPID, int statusToLog, int WODAction, int dcAffected);
 int genRandSleep(void);
 int checkQueExists(int msgQueID);
 int executeWODAct(MasterList* masterList);
+// These functions should only be used by executeWODAct()
+    int attemptToKillProcess(int dcPID, int WODAction, int dcAffected);
+    int attemptToDeleteMsgQ(int msgQueueID);
+
 
 
 
