@@ -12,7 +12,7 @@
 // msg queue constants
 #define CHECK_MSG_QUEUE_EXISTS 0
 
-#define AGREED_UPON_VALUE 100
+#define AGREED_UPON_VALUE 123456789
 #define CURRENT_DIRECTORY "."
 
 #define SHARED_MEMORY_KEY 16535
@@ -21,6 +21,7 @@
 
 #define SECONDS_TO_SLEEP 1
 
+#define INACTIVE_CLIENT_TIME_SECONDS 35
 // msg values
 #define ALL_OK 0
 #define HYDRAULIC_PRESSURE_FAILURE 1
