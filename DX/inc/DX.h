@@ -23,6 +23,8 @@
 #include <time.h>
 #include <sys/shm.h>
 #include <signal.h>
+#include <errno.h>
+
 
 
 

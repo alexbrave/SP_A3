@@ -16,17 +16,20 @@ int checkQueExists(int msgQueID)
 	int sizeofdata = sizeof (MESSAGE) - sizeof (long);
 
     // Set type to 0, so that the DR knows to ignore it
-	msg.type = CHECK_MSG_Q_EXISTS;
+	msg.type = DC_2_INDEX;
 
     // Use the PID that main() supplied in the arguments
-	msg.PID = CHECK_MSG_Q_EXISTS;
+	msg.PID = DC_2_INDEX;
 
     // Use the status that main supplied
-	msg.status = CHECK_MSG_Q_EXISTS;
+	msg.status = DC_2_INDEX;
+
+    printf("Message Queue ID: %d\n\n", msgQueID);
 
 	// Send the message over the message queue and check return
 	if(msgsnd (msgQueID, (void *)&msg, sizeofdata, 0) == OPERATION_FAILED)
     {
+        // printf("\nErrno: %d\n", errno);
         return OPERATION_FAILED;
     }
     else
