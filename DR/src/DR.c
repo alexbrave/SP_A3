@@ -128,14 +128,13 @@ int main(void)
 
     // clean up resources
     printf("Detaching from Shared-Memory\n");
-    shmdt (list);
+    shmdt(list);
 
     printf("Removing the Shared-Memory resource\n");
-    shmctl (sharedMemID, IPC_RMID, 0);
+    shmctl(sharedMemID, IPC_RMID, 0);
 
     return 0;
 }
-
 
 // receives a message
 int receiveMessage(MasterList *list, MESSAGE *msg)
@@ -149,25 +148,28 @@ int receiveMessage(MasterList *list, MESSAGE *msg)
         return NOT_FOUND;
     }
 
-    printf("Received message: %d, status %d\n", msg->PID, msg->status);
+    printf("Received message: %d, status %d, type %d\n", msg->PID, msg->status, msg->type);
 
-    // check if PID is new
-    int clientIndex = checkIDinMasterList(*list, msg->PID);
-    time_t seconds = time(NULL);
+    if (msg->type == DC_MESSAGE_TYPE)
+    {
+        // check if PID is new
+        int clientIndex = checkIDinMasterList(*list, msg->PID);
+        time_t seconds = time(NULL);
 
-    if (clientIndex == NOT_FOUND)
-    {
-        // client is new, add to MasterList
-        //printf("adding PID %d to MasterList\n", msg->PID);
-        list->dc[list->numberOfDCs].dcProcessID = msg->PID;
-        list->dc[list->numberOfDCs].lastTimeHeardFrom = seconds;
-        list->numberOfDCs += 1;
-    }
-    else
-    {
-        // only update last heard from time
-        //printf("client %d already exists, update time\n", msg->PID);
-        list->dc[clientIndex].lastTimeHeardFrom = seconds;
+        if (clientIndex == NOT_FOUND)
+        {
+            // client is new, add to MasterList
+            //printf("adding PID %d to MasterList\n", msg->PID);
+            list->dc[list->numberOfDCs].dcProcessID = msg->PID;
+            list->dc[list->numberOfDCs].lastTimeHeardFrom = seconds;
+            list->numberOfDCs += 1;
+        }
+        else
+        {
+            // only update last heard from time
+            //printf("client %d already exists, update time\n", msg->PID);
+            list->dc[clientIndex].lastTimeHeardFrom = seconds;
+        }
     }
 
     return SUCCESSFUL;
@@ -203,7 +205,6 @@ void displayMasterList(MasterList *list)
     }
 }
 
-
 // checks all DCs for inactivity, removing inactive clients.
 int checkInactiveClients(MasterList *list)
 {
@@ -220,7 +221,6 @@ int checkInactiveClients(MasterList *list)
         }
     }
 }
-
 
 // reorders the MasterList (removing empty elements between DCs)
 void reorder(MasterList *list)
@@ -246,7 +246,6 @@ void reorder(MasterList *list)
     }
 }
 
-
 // checks the status of an incoming message and removes the DC if OFFLINE
 int checkStatus(MasterList *list, MESSAGE msg)
 {
@@ -265,7 +264,6 @@ int checkStatus(MasterList *list, MESSAGE msg)
         }
     }
 }
-
 
 // remove client of given index from MasterList
 int removeClient(MasterList *list, int clientIndex)

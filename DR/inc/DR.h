@@ -35,6 +35,9 @@
 #define MACHINE_OFFLINE 6
 
 
+#define DC_MESSAGE_TYPE 1
+#define DX_MESSAGE_TYPE 0
+
 // MESSAGESTRUCT struct definition
 typedef struct MESSAGESTRUCT 
 {
