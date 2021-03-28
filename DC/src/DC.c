@@ -79,6 +79,10 @@ int main(void)
             return OPERATION_FAILED;
     }
 
+    // Generate a random sleep interval, and sleep for that many seconds
+    sleepInterval = genRandSleep();
+    sleep(sleepInterval);
+
 
     ///////////////
     // Main Loop //
