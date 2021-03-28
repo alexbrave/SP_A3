@@ -6,7 +6,7 @@
  *  DESCRIPTION   : 
  *			This file contains the entry point, main() for the Data Creator program.
  *          The purpose of this program is to create generate messages and send them 
- *          on a message queue to be received/read by another program, the Dat Reader.
+ *          on a message queue to be received/read by another program, the Data Reader.
  *	
 */
 
