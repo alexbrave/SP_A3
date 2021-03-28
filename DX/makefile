@@ -22,21 +22,23 @@ TARGET_DEPENDENCIES += ./obj/logMessage.o
 #
 # =======================================================
 #                     Dependencies
-# =======================================================                     
+# =======================================================  
+# There are no debugging symbols being compiled, to add them add "-g" after "cc -c" for 
+# each of the following object file directives                    
 ./obj/DX.o : ./src/DX.c ./inc/DX.h
-	cc -c -g ./src/DX.c -o ./obj/DX.o
+	cc -c ./src/DX.c -o ./obj/DX.o
 
 ../Common/obj/genRandSleep.o : ../Common/src/genRandSleep.c ../Common/inc/genRandSleep.h
-	cc -c -g ../Common/src/genRandSleep.c -o ../Common/obj/genRandSleep.o
+	cc -c ../Common/src/genRandSleep.c -o ../Common/obj/genRandSleep.o
 
 ./obj/checkQueExists.o : ./src/checkQueExists.c ./inc/DX.h
-	cc -c -g ./src/checkQueExists.c -o ./obj/checkQueExists.o 
+	cc -c ./src/checkQueExists.c -o ./obj/checkQueExists.o 
 
 ./obj/executeWODAct.o : ./src/executeWODAct.c ./inc/DX.h
-	cc -c -g ./src/executeWODAct.c -o ./obj/executeWODAct.o
+	cc -c ./src/executeWODAct.c -o ./obj/executeWODAct.o
 
 ./obj/logMessage.o : ./src/logMessage.c ./inc/DX.h
-	cc -c -g ./src/logMessage.c -o ./obj/logMessage.o
+	cc -c ./src/logMessage.c -o ./obj/logMessage.o
 
 
 #

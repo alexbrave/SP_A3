@@ -23,27 +23,29 @@ TARGET_DEPENDENCIES += ./obj/releaseLogSem.o
 #
 # =======================================================
 #                     Dependencies
-# =======================================================                     
+# =======================================================   
+# There are no debugging symbols being compiled, to add them add "-g" after "cc -c" for 
+# each of the following object file directives                  
 ./obj/DC.o : ./src/DC.c ./inc/DC.h
-	cc -c -g ./src/DC.c -o ./obj/DC.o
+	cc -c ./src/DC.c -o ./obj/DC.o
 
 ../Common/obj/genRandSleep.o : ../Common/src/genRandSleep.c ../Common/inc/genRandSleep.h
-	cc -c -g ../Common/src/genRandSleep.c -o ../Common/obj/genRandSleep.o
+	cc -c ../Common/src/genRandSleep.c -o ../Common/obj/genRandSleep.o
 
 ./obj/genRandStatus.o : ./src/genRandStatus.c ./inc/DC.h
-	cc -c -g ./src/genRandStatus.c -o ./obj/genRandStatus.o 
+	cc -c ./src/genRandStatus.c -o ./obj/genRandStatus.o 
 
 ./obj/getOrCreateLogSem.o : ./src/getOrCreateLogSem.c ./inc/DC.h
-	cc -c -g ./src/getOrCreateLogSem.c -o ./obj/getOrCreateLogSem.o
+	cc -c ./src/getOrCreateLogSem.c -o ./obj/getOrCreateLogSem.o
 
 ./obj/logMessage.o : ./src/logMessage.c ./inc/DC.h
-	cc -c -g ./src/logMessage.c -o ./obj/logMessage.o
+	cc -c ./src/logMessage.c -o ./obj/logMessage.o
 
 ./obj/sendMessage.o : ./src/sendMessage.c ./inc/DC.h
-	cc -c -g ./src/sendMessage.c -o ./obj/sendMessage.o
+	cc -c ./src/sendMessage.c -o ./obj/sendMessage.o
 
 ./obj/releaseLogSem.o : ./src/releaseLogSem.c ./inc/DC.h
-	cc -c -g ./src/releaseLogSem.c -o ./obj/releaseLogSem.o
+	cc -c ./src/releaseLogSem.c -o ./obj/releaseLogSem.o
 
 #
 # =======================================================

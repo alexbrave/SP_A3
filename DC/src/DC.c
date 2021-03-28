@@ -64,6 +64,22 @@ int main(void)
     }
 
 
+    // Attempt to send first message
+    if(sendMessage(dcPID, msgQueID, EVERYTHING_OK_INT) == OPERATION_FAILED)
+    {
+        // attempt to log and exit
+        if(logMessage(dcPID, MSG_QUE_GONE_INT) == OPERATION_FAILED)
+            return OPERATION_FAILED;
+        return OPERATION_SUCCESS;
+    }
+    else
+    {
+        // Looks like sending the message was successful, attempt to log the action
+        if(logMessage(dcPID, randStatus) == OPERATION_FAILED)
+            return OPERATION_FAILED;
+    }
+
+
     ///////////////
     // Main Loop //
     ///////////////
