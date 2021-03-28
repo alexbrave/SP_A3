@@ -12,7 +12,7 @@
 # FINAL BINARY Target
 # Instead of writing out all these object names when linking them in encodeInput
 # we use a convenient variable instead!
-TARGET_DEPENDENCIES := ./obj/DC.o ./obj/genRandSleep.o
+TARGET_DEPENDENCIES := ./obj/DC.o ../Common/obj/genRandSleep.o
 TARGET_DEPENDENCIES += ./obj/genRandStatus.o ./obj/getOrCreateLogSem.o
 TARGET_DEPENDENCIES += ./obj/logMessage.o ./obj/sendMessage.o 
 TARGET_DEPENDENCIES += ./obj/releaseLogSem.o
@@ -27,8 +27,8 @@ TARGET_DEPENDENCIES += ./obj/releaseLogSem.o
 ./obj/DC.o : ./src/DC.c ./inc/DC.h
 	cc -c -g ./src/DC.c -o ./obj/DC.o
 
-./obj/genRandSleep.o : ./src/genRandSleep.c ./inc/DC.h
-	cc -c -g ./src/genRandSleep.c -o ./obj/genRandSleep.o
+../Common/obj/genRandSleep.o : ../Common/src/genRandSleep.c ../Common/inc/genRandSleep.h
+	cc -c -g ../Common/src/genRandSleep.c -o ../Common/obj/genRandSleep.o
 
 ./obj/genRandStatus.o : ./src/genRandStatus.c ./inc/DC.h
 	cc -c -g ./src/genRandStatus.c -o ./obj/genRandStatus.o 

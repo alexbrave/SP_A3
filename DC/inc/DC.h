@@ -1,5 +1,5 @@
 /*
- *  FILE          : dc.h
+ *  FILE          : DC.h
  *  PROJECT       : SENG2030-21W-Sec1-System Programming - Assignment #3
  *  PROGRAMMER    : Andrey Takhtamirov, Alex Braverman
  *  FIRST VERSION : March 24, 2020 
@@ -12,7 +12,8 @@
 #define DC_H
 
 #include <stdio.h>
-#include <stdlib.h>
+// #include <stdlib.h>
+// #include <time.h>
 #include <string.h>
 #include <stdbool.h>
 #include <sys/types.h>
@@ -20,37 +21,36 @@
 #include <sys/msg.h>
 #include <unistd.h>
 #include <sys/sem.h>
-#include <time.h>
+
+#include "../../Common/inc/genRandSleep.h"
 
 
-// POSSIBLY ADD COMMENTS/EXPLANATIONS FOR EACH CONSTANT
+// These values are used to get the message queue ID and the semaphore ID
 #define AGREED_UPON_VALUE 123456789
-#define CURRENT_DIRECTORY "../../DR/bin" // changed from "." - March 26, 2021
+#define CURRENT_DIRECTORY "../../DR/bin" 
+
+// Function return codes
 #define OPERATION_FAILED  -1
 #define OPERATION_SUCCESS 0
-#define MIN_SLEEP         10
-#define MAX_SLEEP         30
 
 // this is for the msgget function to indicate that we want to check if the
-// message queue already exists, rather than create a new one
+// message queue exists
 #define CHECK_MSG_Q_EXISTS 0 
-
 #define MSG_Q_NOT_EXIST_SLEEP 10
 
 
 // Function prototypes
 int sendMessage (pid_t dcPID, int msgQueID, int status);
-int logMessage(int dcPID, int statusToLog, char* messageToLog);
+int logMessage(int dcPID, int statusToLog);
 int genRandStatus(void);
 int getOrCreateLogSem(void);
-int genRandSleep(void);
 // int sendMessage (pid_t dcPID, int msgQueID, int status);
 int releaseLogSem(void);
 
 
 
 
-// Status Constants
+// Regular Status Constants
 #define NUM_OF_STATUSES 7
 #define EVERYTHING_OK_INT 0
 #define EVERYTHING_OK_MSG "Everything is OKAY"
@@ -68,16 +68,17 @@ int releaseLogSem(void);
 #define MACH_OFFLINE_MSG "Machine is Off-line"
 
 // Special statuses for logging
-#define SHUTDOWN_INT 7
+#define MACH_OFF_SHUTD_INT 7
 #define MACH_OFF_SHUTD_MSG "Machine Off-Line message issued, shutting down"
+#define MSG_QUE_GONE_INT 8
 #define MSG_QUE_GONE_MSG "Could not send message over que, it may be gone, shutting down"
+#define CANT_GET_MSG_KEY_INT 9
+#define CANT_GET_MSG_KEY_MSG "Could not get message queue key, shutting down"
+
 
 
 
 // Log file path
-// #define LOG_FILE_PATH "/tmp/dataCreator.log"
-
-// Temp log file for debugging
 #define LOG_FILE_PATH "/tmp/dataCreator.log"
 #define MAX_LOG_LEN 100
 

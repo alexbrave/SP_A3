@@ -1,9 +1,23 @@
-// ADD FILE HEADER COMMENT
+/*
+ *  FILE          : checkQueExists.c 
+ *  PROJECT       : SENG2030-21W-Sec1-System Programming - Assignment #3
+ *  PROGRAMMER    : Andrey Takhtamirov, Alex Braverman
+ *  FIRST VERSION : March 27, 2020 
+ *  DESCRIPTION   : 
+ *			This file contains a function that will check if the queue with the 
+ *          provided ID exists.
+ *	
+*/
 
 
 #include "../inc/DX.h"
 
-// ADD METHOD HEADER COMMENT
+/*
+* FUNCTION 		: checkQueExists
+* DESCRIPTION 	: Checks the existence of a message queue
+* PARAMETERS 	: int msgQueID : the ID of the messsage queue 
+* RETURNS 		: int : returns whether finding the queue succeeded or not
+*/
 int checkQueExists(int msgQueID)
 {
     // We're going to send an empty message to see if the queue exists,
@@ -24,12 +38,9 @@ int checkQueExists(int msgQueID)
     // Use the status that main supplied
 	msg.status = DC_2_INDEX;
 
-    printf("Message Queue ID: %d\n\n", msgQueID);
-
 	// Send the message over the message queue and check return
 	if(msgsnd (msgQueID, (void *)&msg, sizeofdata, 0) == OPERATION_FAILED)
     {
-        // printf("\nErrno: %d\n", errno);
         return OPERATION_FAILED;
     }
     else

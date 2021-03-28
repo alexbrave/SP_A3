@@ -1,8 +1,8 @@
 /*
- *  FILE          : dc.c
+ *  FILE          : DC.c
  *  PROJECT       : SENG2030-21W-Sec1-System Programming - Assignment #3
  *  PROGRAMMER    : Andrey Takhtamirov, Alex Braverman
- *  FIRST VERSION : March 24, 2020 
+ *  FIRST VERSION : March 26, 2020 
  *  DESCRIPTION   : 
  *			This file contains the entry point, main() for the Data Creator program.
  *          The purpose of this program is to create generate messages and send them 
@@ -47,9 +47,7 @@ int main(void)
 
     if(msgQueKey == OPERATION_FAILED)
     {
-        // ADD LOGIC LATER TO HANDLE IF KEY CREATION FAILED AND REMOVE PRINT STATEMENT
-        printf("\nCreating the key failed.\n");
-        // RELEASE SEMAPHORE AFTER LOGGING
+        logMessage(dcPID, CANT_GET_MSG_KEY_INT);
         return 0;
     }
 
@@ -85,20 +83,24 @@ int main(void)
         // Attempt to send message
         if(sendMessage(dcPID, msgQueID, randStatus) == OPERATION_FAILED)
         {
-            // log and exit
-            printf("Could not send message, possibly because message queue is gone!");
-            logMessage(dcPID, SHUTDOWN_INT, MSG_QUE_GONE_MSG);
-            // RELEASE SEMAPHORE
-            return 0;
+            // attempt to log and exit
+            if(logMessage(dcPID, MSG_QUE_GONE_INT) == OPERATION_FAILED)
+                return OPERATION_FAILED;
+            return OPERATION_SUCCESS;
+        }
+        else
+        {
+            // Looks like sending the message was successful, attempt to log the action
+            if(logMessage(dcPID, randStatus) == OPERATION_FAILED)
+                return OPERATION_FAILED;
         }
 
         if(shutdownDC == true)
         {
-            // log and exit
-            printf("Sent status 6, Machine Off-Line, shutting down.");
-            logMessage(dcPID, SHUTDOWN_INT, MACH_OFF_SHUTD_MSG);
-            // RELEASE SEMAPHORE
-            return 0;
+            // log that the shutdown message has been sent, so we are shutting down and exit
+            if(logMessage(dcPID, MACH_OFF_SHUTD_INT) == OPERATION_FAILED)
+                return OPERATION_FAILED;
+            return OPERATION_SUCCESS;
         }
         else
         {

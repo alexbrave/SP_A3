@@ -1,10 +1,22 @@
-// ADD FILE HEADER COMMENT
-
+/*
+ *  FILE          : releaseLogSem.c
+ *  PROJECT       : SENG2030-21W-Sec1-System Programming - Assignment #3
+ *  PROGRAMMER    : Andrey Takhtamirov, Alex Braverman
+ *  FIRST VERSION : March 27, 2020 
+ *  DESCRIPTION   : 
+ *			This file contains a function that will attempt to release the log
+ *          file semaphore, that this process acquired using getOrCreateLogSem()
+ *	
+*/
 
 #include "../inc/DC.h"
 
-// ADD METHOD HEADER COMMENT
-
+/*
+* FUNCTION 		: releaseLogSem
+* DESCRIPTION 	: Releases the log file semaphore currently held by this process
+* PARAMETERS 	: void : this function takes no parameters
+* RETURNS 		: int : returns whether the operation succeeded or failed
+*/
 int releaseLogSem(void)
 {
     // Here we define our acquire and release semaphore operation structs
@@ -26,10 +38,10 @@ int releaseLogSem(void)
     // Check if the semaphore already exists, hopefully it does
     semaphoreID = semget(semaphoreKey, NUM_OF_SEMS, CHECK_SEM_EXISTS);
 
+    // Attempt to release the semaphore
     if (semop (semaphoreID, &release_operation, 1) == OPERATION_FAILED) 
     {
-        printf ("(USER1) GRRRRR.... Can't release critical region\n");
-        exit (4);
+        // If releasing the semaphore is unsucessful, there is a problem
         return OPERATION_FAILED;
     }
     else

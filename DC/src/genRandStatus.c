@@ -1,14 +1,24 @@
-// ADD FILE HEADER COMMENT
-
+/*
+ *  FILE          : genRandStatus.c
+ *  PROJECT       : SENG2030-21W-Sec1-System Programming - Assignment #3
+ *  PROGRAMMER    : Andrey Takhtamirov, Alex Braverman
+ *  FIRST VERSION : March 27, 2020 
+ *  DESCRIPTION   : 
+ *			This file contains a function that will generate a random status for
+ *          the data creator to send to the data reader.
+ *	
+*/
 
 #include "../inc/DC.h"
 
-// ADD METHOD HEADER COMMENT
+/*
+* FUNCTION 		: genRandStatus
+* DESCRIPTION 	: Generates a random status between 0 and 6
+* PARAMETERS 	: void : this function takes no parameters
+* RETURNS 		: int : returns the random status
+*/
 int genRandStatus(void)
 {
-    // const int statusMin = EVERYTHING_OK_INT;
-    // const int statusMax = MACH_OFFLINE_INT;
-
     int result = 0;
     time_t secondsSinceEpoch = 0;
       

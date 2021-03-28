@@ -53,41 +53,39 @@ int main(void)
     // Next the data corruptor will get the key, via which it will determine if the message queue exists
     sharedMemKey = ftok(AGREED_UPON_PATH, AGREED_UPON_VALUE);
 
-    if(sharedMemKey == OPERATION_FAILED)
-    {
-        // ADD LOGIC LATER TO HANDLE IF KEY CREATION FAILED AND REMOVE PRINT STATEMENT
-        printf("\nCreating the shared memory key failed.\n");
-        // RELEASE SEMAPHORE AFTER LOGGING
-        return 0;
-    }
-
     // Use key to check if shared memory exists on a loop
     sharedMemID = shmget(sharedMemKey, SHARED_MEM_SIZE, CHECK_SHR_MEM_EXIST);
-    // ADD LOGIC FOR IF THIS FAILS
-
-    masterList = (MasterList*)shmat(sharedMemID, NULL, SHM_RDONLY);
     retryCounter--;
 
     // While the data corruptor is not able to attach to the shared memory, it will keep trying,
     // up to 100 times, and sleep for 10 seconds in between attempts
-    while((int)masterList == OPERATION_FAILED && retryCounter > 0)
+    while(sharedMemID == OPERATION_FAILED && retryCounter > 0)
     {
+        sharedMemID = shmget(sharedMemKey, SHARED_MEM_SIZE, CHECK_SHR_MEM_EXIST);
         sleep(CANT_ATTACH_SLEEP);
         retryCounter--;
     }
 
+    // If the retry counter is at 0, we tried to many times to get the shared memory ID
     if(retryCounter == 0)
     {
-        // LOG THAT ATTACHING TO MEMORY FAILED SO SHUTTING DOWN, AND QUIT
+        logMessage(EMPTY_VALUE, CANT_GET_MEM_ID, EMPTY_VALUE, EMPTY_VALUE);
+        return OPERATION_FAILED;
     }
 
+    // Try to attach to memory
+    masterList = (MasterList*)shmat(sharedMemID, NULL, SHM_RDONLY);
+    if(masterList == (void *)OPERATION_FAILED)
+    {
+        logMessage(EMPTY_VALUE, CANT_ATTACH_MEM, EMPTY_VALUE, EMPTY_VALUE);
+        return OPERATION_FAILED;
+    }
 
     // Attempt to send meaningless message to check if message queue exists
     if(checkQueExists(masterList->msgQueueID) == OPERATION_FAILED)
     {
-        // LOG AND EXIT
-        printf("Could not send message, possibly because message queue is gone!");
-        return 0;
+        logMessage(EMPTY_VALUE, MSG_Q_NOT_THERE, EMPTY_VALUE, EMPTY_VALUE);
+        return OPERATION_FAILED;
     }
 
     ///////////////
@@ -102,31 +100,31 @@ int main(void)
         randSleepInterval = genRandSleep();
         sleep(randSleepInterval);
 
+        // Attempt to send meaningless message to check if message queue exists
+        if(checkQueExists(masterList->msgQueueID) == OPERATION_FAILED)
+        {
+            logMessage(EMPTY_VALUE, MSG_Q_NOT_THERE, EMPTY_VALUE, EMPTY_VALUE);
+            return OPERATION_SUCCESS;
+        }
+
         // Here we call the function that will execute a random WOD action
+        // executeWODAct will log everything that it needs to
         wODActResult = executeWODAct(masterList);
 
+
         // If we were able to delete the message queue, or the message queue was already gone,
-        // or if we failed to execute the random WOD action, set the flag indicating if we should
-        // quit to true
+        // detach from the memory and exit
         if(wODActResult == MSG_Q_DEL_SHUT_D ||
-           wODActResult == MSG_Q_NOT_THERE  ||
-           wODActResult == ACT_FAILED_QUIT)
+           wODActResult == MSG_Q_NOT_THERE)
         {
-            shutdownDX = true;
+            shmdt(masterList);
+            return OPERATION_SUCCESS;
         }
 
-
-        if(shutdownDX == true)
+        if(wODActResult == OPERATION_FAILED)
         {
-            // LOG AND EXIT
-            return 0;
+            return OPERATION_FAILED;
         }
-        // else
-        // {
-        //     // Generate a random sleep interval, and sleep for that many seconds
-        //     randSleepInterval = genRandSleep();
-        //     sleep(randSleepInterval);
-        // }
     }
     
 }

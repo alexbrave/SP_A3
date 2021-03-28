@@ -12,7 +12,8 @@
 #define DC_H
 
 #include <stdio.h>
-#include <stdlib.h>
+// #include <stdlib.h>
+// #include <time.h>
 #include <string.h>
 #include <stdbool.h>
 #include <sys/types.h>
@@ -20,10 +21,11 @@
 #include <sys/msg.h>
 #include <unistd.h>
 #include <sys/sem.h>
-#include <time.h>
 #include <sys/shm.h>
 #include <signal.h>
 #include <errno.h>
+
+#include "../../Common/inc/genRandSleep.h"
 
 
 
@@ -32,8 +34,7 @@
 
 #define OPERATION_FAILED  -1
 #define OPERATION_SUCCESS 0
-#define MIN_SLEEP         10
-#define MAX_SLEEP         30
+#define EMPTY_VALUE       0
 
 
 // These constants are for the shared memory
@@ -57,7 +58,10 @@
 #define ACT_FAILED_QUIT     4 // the process was found, but the action failed, so shut down
 #define MSG_Q_NOT_THERE     5 // we were going to delete the message queue, 
                               // but it's already gone, so shut down
-#define DC_KILL_SUCCESS     6
+#define DC_KILL_SUCCESS     6 // Successfully killed the process
+#define CANT_KILL_PROC      7 // failed to kill the process
+#define CANT_GET_MEM_ID     8 // Not able to get the shared memory ID from the key
+#define CANT_ATTACH_MEM     9 // DX got the shared memory ID, but couldn't attach
 
 // WOD Target Processes Indexes
 #define DC_1_INDEX    0
@@ -93,12 +97,9 @@ typedef struct
 
 // Function prototypes
 int logMessage(int dcPID, int statusToLog, int WODAction, int dcAffected);
-int genRandSleep(void);
 int checkQueExists(int msgQueID);
 int executeWODAct(MasterList* masterList);
-// These functions should only be used by executeWODAct()
-    int attemptToKillProcess(int dcPID, int WODAction, int dcAffected);
-    int attemptToDeleteMsgQ(int msgQueueID);
+
 
 
 
